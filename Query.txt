@@ -1,0 +1,100 @@
+create type Active as Enum('yes','no','in progress') 
+
+create table teachers
+(
+    id serial primary key,
+	teacherCode varchar(12) unique,
+	teacherFullName varchar(80) not null,
+	gender varchar(10),
+	dob date,
+	email varchar(50),
+	phone varchar(50) unique,
+	isActive active,
+	joindate date
+) 
+
+create table parents
+(
+    id serial primary key,
+	ParentCode varchar(12) unique,
+	ParentFullName varchar(80) not null,
+	email varchar(50),
+	phone varchar(20) unique,
+	createdAt date
+) 
+
+create table schools
+(
+   id serial primary key,
+	schoolTitle varchar(50),
+	levelCount int,
+	isActive active,
+	createdAt date	
+) 
+
+create table subjects
+(
+    id serial primary key,
+	title varchar(100) not null,
+	schoolId int references schools(id),
+	createdAt date
+) 
+
+create table students
+(
+     id serial primary key,
+	studentCode varchar(20) unique,
+	studentfullname varchar(100),
+	gender varchar(20),
+	DOB date,
+	email varchar(30),
+	phone varchar(20) unique,
+	schoolId int references schools(id),
+	IsActive active,
+	joinDate date
+) 
+
+create table studentParent
+(
+    id serial primary key,
+	studentid int references students(id) not null,
+	parentId int references parents(id),
+	relationship varchar(20)
+) 
+
+create table clasrooms
+(
+    id serial primary key,
+	capacity int not null,
+	roomtype varchar(20),
+	description varchar(30),
+	createdAt date
+) 
+
+create table class
+(
+    id serial primary key,
+	className varchar(50) not null,
+	subjectid int references subjects(id),
+	teacherId int references teachers(id),
+	classroomid int references clasrooms(id),
+	section varchar(10),
+	createdAt date
+) 
+
+create table classStudent
+(
+    id serial primary key,
+	classId int references class(id) not null,
+	studentid int references students(id) not null
+)
+
+
+
+
+
+
+
+
+
+
